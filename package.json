@@ -1,0 +1,55 @@
+{
+    "name": "growpanel-cli",
+    "version": "0.1.1",
+    "description": "CLI for GrowPanel subscription analytics API - optimized for AI agents and scripting",
+    "type": "module",
+    "bin": {
+        "growpanel": "bin/growpanel.js"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsup src/index.ts --format esm --dts --clean",
+        "dev": "tsx src/index.ts",
+        "prepublishOnly": "npm run build",
+        "typecheck": "tsc --noEmit"
+    },
+    "files": [
+        "dist/**/*",
+        "bin/**/*",
+        "README.md",
+        "LICENSE"
+    ],
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "keywords": [
+        "growpanel",
+        "saas",
+        "metrics",
+        "mrr",
+        "arr",
+        "churn",
+        "cli",
+        "subscription-analytics",
+        "recurring-revenue"
+    ],
+    "author": "GrowPanel ApS",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/growpanel/growpanel-cli.git"
+    },
+    "dependencies": {
+        "chalk": "^5.4.1",
+        "cli-table3": "^0.6.5",
+        "commander": "^13.1.0",
+        "ora": "^8.2.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.17.0",
+        "tsup": "^8.4.0",
+        "tsx": "^4.19.0",
+        "typescript": "^5.7.0"
+    }
+}

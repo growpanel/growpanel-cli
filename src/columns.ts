@@ -1,0 +1,110 @@
+import type { ColumnDef } from './types.js';
+
+const COLUMNS: Record<string, ColumnDef[]> = {
+    'mrr': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'total_mrr', header: 'MRR', format: 'currency', align: 'right' },
+        { key: 'total_arr', header: 'ARR', format: 'currency', align: 'right' },
+        { key: 'new', header: 'New', format: 'currency', align: 'right' },
+        { key: 'expansion', header: 'Expansion', format: 'currency', align: 'right' },
+        { key: 'contraction', header: 'Contraction', format: 'currency', align: 'right' },
+        { key: 'churn', header: 'Churn', format: 'currency', align: 'right' },
+        { key: 'reactivation', header: 'Reactivation', format: 'currency', align: 'right' },
+        { key: 'total_customers', header: 'Customers', format: 'number', align: 'right' },
+    ],
+    'movement-table': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'customer_name', header: 'Customer', align: 'left' },
+        { key: 'type', header: 'Type', align: 'left' },
+        { key: 'mrr_change', header: 'MRR Change', format: 'currency', align: 'right' },
+        { key: 'new_mrr', header: 'New MRR', format: 'currency', align: 'right' },
+        { key: 'old_mrr', header: 'Old MRR', format: 'currency', align: 'right' },
+        { key: 'plan_name', header: 'Plan', align: 'left' },
+    ],
+    'cohort': [
+        { key: 'cohort_date', header: 'Cohort', align: 'left' },
+        { key: 'customers', header: 'Customers', format: 'number', align: 'right' },
+        { key: 'retention_rate', header: 'Retention', format: 'percent', align: 'right' },
+    ],
+    'leads': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'new_leads', header: 'New Leads', format: 'number', align: 'right' },
+        { key: 'new_trials', header: 'New Trials', format: 'number', align: 'right' },
+        { key: 'conversions', header: 'Conversions', format: 'number', align: 'right' },
+        { key: 'conversion_rate', header: 'Conv. Rate', format: 'percent', align: 'right' },
+    ],
+    'leads-table': [
+        { key: 'name', header: 'Name', align: 'left' },
+        { key: 'email', header: 'Email', align: 'left' },
+        { key: 'created_date', header: 'Created', format: 'date', align: 'left' },
+        { key: 'status', header: 'Status', align: 'left' },
+        { key: 'plan_name', header: 'Plan', align: 'left' },
+        { key: 'trial_end_date', header: 'Trial End', format: 'date', align: 'left' },
+    ],
+    'customer-concentration': [
+        { key: 'name', header: 'Customer', align: 'left' },
+        { key: 'mrr', header: 'MRR', format: 'currency', align: 'right' },
+        { key: 'percentage', header: 'Percentage', format: 'percent', align: 'right' },
+    ],
+    'cashflow-failed-payments': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'amount', header: 'Amount', format: 'currency', align: 'right' },
+        { key: 'count', header: 'Count', format: 'number', align: 'right' },
+        { key: 'recovery_rate', header: 'Recovery Rate', format: 'percent', align: 'right' },
+    ],
+    'cashflow-refunds': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'amount', header: 'Amount', format: 'currency', align: 'right' },
+        { key: 'count', header: 'Count', format: 'number', align: 'right' },
+    ],
+    'transactions': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'amount', header: 'Amount', format: 'currency', align: 'right' },
+        { key: 'count', header: 'Count', format: 'number', align: 'right' },
+        { key: 'type', header: 'Type', align: 'left' },
+    ],
+    'custom-variables': [
+        { key: 'variable_name', header: 'Variable', align: 'left' },
+        { key: 'value', header: 'Value', align: 'left' },
+        { key: 'customer_count', header: 'Customers', format: 'number', align: 'right' },
+    ],
+};
+
+export const KNOWN_REPORTS = [
+    'mrr',
+    'mrr-table',
+    'mrr-table-subtypes',
+    'summary',
+    'cmrr-summary',
+    'movement-table',
+    'map',
+    'cohort',
+    'leads',
+    'leads-table',
+    'leads-days',
+    'leads-summary',
+    'transactions',
+    'transactions-table',
+    'transactions-detail',
+    'transactions-summary',
+    'invoices-detail',
+    'churn-scheduled',
+    'churn-scheduled-movements',
+    'churn-scheduled-summary',
+    'customer-concentration',
+    'cashflow-failed-payments',
+    'cashflow-failed-payments-summary',
+    'cashflow-failed-payments-detail',
+    'cashflow-failed-payments-table',
+    'cashflow-refunds',
+    'cashflow-refunds-table',
+    'cashflow-refunds-detail',
+    'cashflow-failure-rate',
+    'cashflow-failure-rate-summary',
+    'cashflow-outstanding-unpaid',
+    'custom-variables',
+];
+
+export function getColumns(reportName: string): ColumnDef[] | null {
+    return COLUMNS[reportName] || null;
+}
