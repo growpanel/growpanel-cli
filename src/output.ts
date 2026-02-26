@@ -5,16 +5,22 @@ import type { Config, ColumnDef } from './types.js';
 interface RenderOptions {
     config: Config;
     columns?: ColumnDef[] | null;
+    currency?: string;
 }
 
-function formatValue(value: unknown, format?: ColumnDef['format']): string {
+function formatValue(value: unknown, format?: ColumnDef['format'], currencyCode?: string): string {
     if (value === null || value === undefined) {
         return '';
     }
 
     switch (format) {
-        case 'currency':
-            return `$${(Number(value) / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        case 'currency': {
+            const num = Number(value) / 100;
+            if (currencyCode) {
+                return new Intl.NumberFormat('en-US', { style: 'currency', currency: currencyCode.toUpperCase() }).format(num);
+            }
+            return `$${num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
         case 'percent':
             return `${Number(value).toFixed(2)}%`;
         case 'number':
@@ -147,7 +153,7 @@ export function render(data: unknown, options: RenderOptions): void {
         for (const row of data) {
             const values = cols.map(c => {
                 const value = (row as Record<string, unknown>)[c.key];
-                const formatted = formatValue(value, c.format);
+                const formatted = formatValue(value, c.format, options.currency);
                 return escapeCSV(formatted);
             });
             process.stdout.write(values.join(',') + '\n');
@@ -170,7 +176,7 @@ export function render(data: unknown, options: RenderOptions): void {
     for (const row of data) {
         const values = cols.map(c => {
             const value = (row as Record<string, unknown>)[c.key];
-            return formatValue(value, c.format);
+            return formatValue(value, c.format, options.currency);
         });
         table.push(values);
     }

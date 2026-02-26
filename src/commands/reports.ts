@@ -61,13 +61,18 @@ Examples:
             const params = buildReportParams(options);
             const data = await client.get(`/reports/${name}`, params);
 
+            // Extract currency before unwrapping
+            const currency = (data && typeof data === 'object' && 'currency' in (data as any))
+                ? String((data as any).currency)
+                : undefined;
+
             // Unwrap { result: ... } if present
             const result = (data && typeof data === 'object' && 'result' in (data as any))
                 ? (data as any).result
                 : data;
 
             const columns = getColumns(name);
-            render(result, { config, columns });
+            render(result, { config, columns, currency });
         } catch (err) {
             handleError(err, command.optsWithGlobals()?.verbose);
         }
