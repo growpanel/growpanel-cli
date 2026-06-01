@@ -41,7 +41,7 @@
         "url": "https://github.com/growpanel/growpanel-cli.git"
     },
     "dependencies": {
-        "@growpanel/sdk": "^0.1.0",
+        "@growpanel/sdk": "^0.1.2",
         "chalk": "^5.4.1",
         "cli-table3": "^0.6.5",
         "commander": "^13.1.0",
