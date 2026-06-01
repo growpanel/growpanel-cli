@@ -26,6 +26,17 @@ const COLUMNS: Record<string, ColumnDef[]> = {
         { key: 'customers', header: 'Customers', format: 'number', align: 'right' },
         { key: 'retention_rate', header: 'Retention', format: 'percent', align: 'right' },
     ],
+    'retention': [
+        { key: 'date', header: 'Date', align: 'left' },
+        { key: 'nrr', header: 'NRR', format: 'percent', align: 'right' },
+        { key: 'grr', header: 'GRR', format: 'percent', align: 'right' },
+        { key: 'customer_churn_rate', header: 'Logo churn', format: 'percent', align: 'right' },
+        { key: 'mrr_churn_rate', header: 'MRR churn', format: 'percent', align: 'right' },
+        { key: 'net_mrr_churn_rate', header: 'Net MRR churn', format: 'percent', align: 'right' },
+        { key: 'arpa', header: 'ARPA', format: 'currency', align: 'right' },
+        { key: 'ltv', header: 'LTV', format: 'currency', align: 'right' },
+        { key: 'customer_lifetime', header: 'Lifetime (mo)', format: 'number', align: 'right' },
+    ],
     'leads': [
         { key: 'date', header: 'Date', align: 'left' },
         { key: 'new_leads', header: 'New Leads', format: 'number', align: 'right' },
@@ -79,6 +90,8 @@ export const KNOWN_REPORTS = [
     'movement-table',
     'map',
     'cohort',
+    // Source of truth for churn / retention / NRR / GRR / LTV / customer_lifetime.
+    'retention',
     'leads',
     'leads-table',
     'leads-days',
