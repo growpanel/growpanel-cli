@@ -8,6 +8,7 @@ import { registerSettingsCommand } from './commands/settings.js';
 import { registerIntegrationsCommand } from './commands/integrations.js';
 import { registerAccountCommand } from './commands/account.js';
 import { registerApiCommand } from './commands/api.js';
+import { registerAiCommand } from './commands/ai.js';
 
 const program = new Command();
 
@@ -30,5 +31,6 @@ registerSettingsCommand(program);
 registerIntegrationsCommand(program);
 registerAccountCommand(program);
 registerApiCommand(program);
+registerAiCommand(program);
 
 program.parse();

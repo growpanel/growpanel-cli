@@ -62,4 +62,34 @@ Examples:
                 handleError(err, command.optsWithGlobals()?.verbose);
             }
         });
+
+    // exports mrr-growth
+    exports
+        .command('mrr-growth')
+        .description('Export MRR growth (per-month-per-day cumulative MRR change) as CSV')
+        .option('--date <range>', 'Date range in yyyyMMdd-yyyyMMdd format')
+        .option('--category <types>', 'Filter to specific movement types (space-separated): new, expansion, reactivation, contraction, churn')
+        .addHelpText('after', `
+Examples:
+  $ growpanel exports mrr-growth > growth.csv
+  $ growpanel exports mrr-growth --date 20260101-20260331 > q1_growth.csv
+  $ growpanel exports mrr-growth --category new > new_customer_growth.csv
+        `)
+        .action(async (options: { date?: string; category?: string }, command: Command) => {
+            try {
+                const globalOpts = command.optsWithGlobals() as GlobalOptions;
+                const config = loadConfig(globalOpts);
+                const client = new GrowPanelClient(config);
+
+                const params: Record<string, string | undefined> = {
+                    date: options.date,
+                    category: options.category,
+                };
+
+                const csv = await client.getRaw('/exports/mrr-growth.csv', params);
+                process.stdout.write(csv);
+            } catch (err) {
+                handleError(err, command.optsWithGlobals()?.verbose);
+            }
+        });
 }
