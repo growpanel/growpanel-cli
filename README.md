@@ -1,11 +1,11 @@
-# growpanel-cli
+# @growpanel/cli
 
 CLI for the [GrowPanel](https://growpanel.io) subscription analytics API. Designed for scripting, automation, and AI agents.
 
 ## Install
 
 ```bash
-npm install -g growpanel-cli
+npm install -g @growpanel/cli
 ```
 
 Requires Node.js 20 or later.

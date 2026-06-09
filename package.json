@@ -1,5 +1,5 @@
 {
-    "name": "growpanel-cli",
+    "name": "@growpanel/cli",
     "version": "0.1.3",
     "description": "CLI for GrowPanel subscription analytics API - optimized for AI agents and scripting",
     "type": "module",
