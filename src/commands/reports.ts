@@ -15,7 +15,7 @@ function addReportOptions(cmd: Command): Command {
         .option('--plan <id>', 'Filter by plan group ID')
         .option('--country <code>', 'Filter by ISO country code')
         .option('--data-source <id>', 'Filter by data source ID')
-        .option('--breakdown <field>', 'Group results by: plan, currency, billing_freq, etc.')
+        .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>.')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
 }
 
