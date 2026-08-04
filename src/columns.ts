@@ -83,6 +83,7 @@ const COLUMNS: Record<string, ColumnDef[]> = {
 
 export const KNOWN_REPORTS = [
     'mrr',
+    'mrr-growth',
     'mrr-table',
     'mrr-table-subtypes',
     'summary',
@@ -104,6 +105,8 @@ export const KNOWN_REPORTS = [
     'churn-scheduled',
     'churn-scheduled-movements',
     'churn-scheduled-summary',
+    'cancellation-timing',
+    'cancellation-timing-detail',
     'customer-concentration',
     'cashflow-failed-payments',
     'cashflow-failed-payments-summary',
