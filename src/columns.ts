@@ -84,6 +84,7 @@ const COLUMNS: Record<string, ColumnDef[]> = {
 export const KNOWN_REPORTS = [
     'mrr',
     'mrr-growth',
+    'mrr-subtypes',
     'mrr-table',
     'mrr-table-subtypes',
     'summary',

@@ -16,6 +16,7 @@ function addReportOptions(cmd: Command): Command {
         .option('--country <code>', 'Filter by ISO country code')
         .option('--data-source <id>', 'Filter by data source ID')
         .option('--billing-freq <freq>', 'Filter by billing frequency: month | year | quarter | week | day (the adjective forms monthly/yearly/annual are auto-normalised). Space-separate for OR.')
+        .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
         .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
 }
@@ -30,6 +31,7 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         country: opts.country,
         data_source: opts.dataSource,
         billing_freq: opts.billingFreq,
+        type: opts.type,
         breakdown: opts.breakdown,
         show: opts.show,
     };
