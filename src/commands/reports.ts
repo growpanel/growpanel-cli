@@ -15,7 +15,12 @@ function addReportOptions(cmd: Command): Command {
         .option('--plan <id>', 'Filter by plan group ID')
         .option('--country <code>', 'Filter by ISO country code')
         .option('--data-source <id>', 'Filter by data source ID')
+        .option('--segment <id>', 'Filter by saved segment ID (a filter combination saved in the app). The report only covers customers matching the segment — list them with: growpanel data segments list')
         .option('--billing-freq <freq>', 'Filter by billing frequency: month | year | quarter | week | day (the adjective forms monthly/yearly/annual are auto-normalized). Space-separate for OR.')
+        .option('--created-date <range>', 'Filter by when the lead was created. Inclusive range: from..to, from.. (on or after), ..to (on or before), or a single date. Accepts yyyy-MM-dd or yyyyMMdd. Use * for "has any value", ~ for "has none".')
+        .option('--paid-started <range>', 'Filter by when the customer started paying. Same range format as --created-date. Use this (not --created-date) for revenue questions like "how is the 2026 intake retaining?".')
+        .option('--cancel-date <range>', 'Filter by when the subscription was cancelled. Same range format as --created-date.')
+        .option('--trial-end-date <range>', 'Filter by when the trial ends. Same range format as --created-date.')
         .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
         .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
@@ -30,7 +35,12 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         plan: opts.plan,
         country: opts.country,
         data_source: opts.dataSource,
+        segment: opts.segment,
         billing_freq: opts.billingFreq,
+        created_date: opts.createdDate,
+        paid_started: opts.paidStarted,
+        cancel_date: opts.cancelDate,
+        trial_end_date: opts.trialEndDate,
         type: opts.type,
         breakdown: opts.breakdown,
         show: opts.show,

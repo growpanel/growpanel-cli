@@ -6,7 +6,7 @@ import { handleError } from '../errors.js';
 import { readBody } from '../body.js';
 import type { GlobalOptions } from '../types.js';
 
-const RESOURCES = ['customers', 'plans', 'plan-groups', 'data-sources', 'invoices'];
+const RESOURCES = ['customers', 'plans', 'plan-groups', 'data-sources', 'invoices', 'segments'];
 
 function createCrudCommands(parent: Command, resource: string): void {
     // list
