@@ -26,14 +26,22 @@ export function registerCustomersCommand(program: Command): void {
         .option('--date <range>', 'Date range in yyyyMMdd-yyyyMMdd format')
         .option('--limit <n>', 'Maximum number of results')
         .option('--offset <n>', 'Offset for pagination')
+        .option('--created-date <range>', 'Filter by when the lead was created. Inclusive range: from..to, from.. (on or after), ..to (on or before), or a single date. Accepts yyyy-MM-dd or yyyyMMdd. Use * for "has any value", ~ for "has none".')
+        .option('--paid-started <range>', 'Filter by when the customer started paying. Same range format as --created-date.')
+        .option('--cancel-date <range>', 'Filter by when the subscription was cancelled. Same range format as --created-date.')
+        .option('--renewal-date <range>', 'Filter by the next renewal (next billing) date. Same range format as --created-date.')
+        .option('--trial-end-date <range>', 'Filter by when the trial ends. Same range format as --created-date.')
+        .option('--status <status>', 'Filter by status (e.g. active, canceled, trialing). Use "all" to include every status.')
         .addHelpText('after', `
 Examples:
   $ growpanel customers list
   $ growpanel customers list --limit 100
   $ growpanel customers list --date 20240101-20241231
   $ growpanel customers list --offset 100 --limit 50
+  $ growpanel customers list --paid-started 20260101..20260630 --status all
+  $ growpanel customers list --cancel-date '~' --status all      # never cancelled
         `)
-        .action(async (options: { date?: string; limit?: string; offset?: string }, command: Command) => {
+        .action(async (options: { date?: string; limit?: string; offset?: string; createdDate?: string; paidStarted?: string; cancelDate?: string; renewalDate?: string; trialEndDate?: string; status?: string }, command: Command) => {
             try {
                 const globalOpts = command.optsWithGlobals() as GlobalOptions;
                 const config = loadConfig(globalOpts);
@@ -43,6 +51,12 @@ Examples:
                     date: options.date,
                     limit: options.limit,
                     offset: options.offset,
+                    created_date: options.createdDate,
+                    paid_started: options.paidStarted,
+                    cancel_date: options.cancelDate,
+                    renewal_date: options.renewalDate,
+                    trial_end_date: options.trialEndDate,
+                    status: options.status,
                 };
 
                 const data = await client.get('/customers', params);

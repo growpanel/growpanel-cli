@@ -20,6 +20,7 @@ function addReportOptions(cmd: Command): Command {
         .option('--created-date <range>', 'Filter by when the lead was created. Inclusive range: from..to, from.. (on or after), ..to (on or before), or a single date. Accepts yyyy-MM-dd or yyyyMMdd. Use * for "has any value", ~ for "has none".')
         .option('--paid-started <range>', 'Filter by when the customer started paying. Same range format as --created-date. Use this (not --created-date) for revenue questions like "how is the 2026 intake retaining?".')
         .option('--cancel-date <range>', 'Filter by when the subscription was cancelled. Same range format as --created-date.')
+        .option('--renewal-date <range>', 'Filter by the next renewal (next billing) date. Same range format as --created-date.')
         .option('--trial-end-date <range>', 'Filter by when the trial ends. Same range format as --created-date.')
         .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
         .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
@@ -40,6 +41,7 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         created_date: opts.createdDate,
         paid_started: opts.paidStarted,
         cancel_date: opts.cancelDate,
+        renewal_date: opts.renewalDate,
         trial_end_date: opts.trialEndDate,
         type: opts.type,
         breakdown: opts.breakdown,
