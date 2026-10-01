@@ -31,6 +31,10 @@ export function registerCustomersCommand(program: Command): void {
         .option('--cancel-date <range>', 'Filter by when the subscription was cancelled. Same range format as --created-date.')
         .option('--renewal-date <range>', 'Filter by the next renewal (next billing) date. Same range format as --created-date.')
         .option('--trial-end-date <range>', 'Filter by when the trial ends. Same range format as --created-date.')
+        .option('--mrr <amount>', 'Filter by current MRR, in whole units of the account currency (not cents): 1000 (is), 1000.. (above), ..1000 (below), 500..1000 (between, inclusive).')
+        .option('--last-active-mrr <amount>', 'Filter by the MRR the last time it was above zero (finds churned customers by what they paid). Same format as --mrr.')
+        .option('--total-paid <amount>', 'Filter by total paid so far (successful payments incl. one-time, after discounts, refunds not subtracted). Same format as --mrr.')
+        .option('--payments <count>', 'Filter by the number of successful payments: 3 (exactly), 3.. (more than), ..3 (fewer than), 2..5 (between, inclusive).')
         .option('--status <status>', 'Filter by status (e.g. active, canceled, trialing). Use "all" to include every status.')
         .addHelpText('after', `
 Examples:
@@ -40,8 +44,9 @@ Examples:
   $ growpanel customers list --offset 100 --limit 50
   $ growpanel customers list --paid-started 20260101..20260630 --status all
   $ growpanel customers list --cancel-date '~' --status all      # never cancelled
+  $ growpanel customers list --cancel-date 20260901..20260930 --total-paid ..200 --status all
         `)
-        .action(async (options: { date?: string; limit?: string; offset?: string; createdDate?: string; paidStarted?: string; cancelDate?: string; renewalDate?: string; trialEndDate?: string; status?: string }, command: Command) => {
+        .action(async (options: { date?: string; limit?: string; offset?: string; createdDate?: string; paidStarted?: string; cancelDate?: string; renewalDate?: string; trialEndDate?: string; mrr?: string; lastActiveMrr?: string; totalPaid?: string; payments?: string; status?: string }, command: Command) => {
             try {
                 const globalOpts = command.optsWithGlobals() as GlobalOptions;
                 const config = loadConfig(globalOpts);
@@ -56,6 +61,10 @@ Examples:
                     cancel_date: options.cancelDate,
                     renewal_date: options.renewalDate,
                     trial_end_date: options.trialEndDate,
+                    mrr: options.mrr,
+                    last_active_mrr: options.lastActiveMrr,
+                    total_paid: options.totalPaid,
+                    payments: options.payments,
                     status: options.status,
                 };
 

@@ -22,6 +22,10 @@ function addReportOptions(cmd: Command): Command {
         .option('--cancel-date <range>', 'Filter by when the subscription was cancelled. Same range format as --created-date.')
         .option('--renewal-date <range>', 'Filter by the next renewal (next billing) date. Same range format as --created-date.')
         .option('--trial-end-date <range>', 'Filter by when the trial ends. Same range format as --created-date.')
+        .option('--mrr <amount>', 'Filter by current MRR, in whole units of the account currency (not cents): 1000 (is), 1000.. (above), ..1000 (below), 500..1000 (between, inclusive).')
+        .option('--last-active-mrr <amount>', 'Filter by the MRR the last time it was above zero (finds churned customers by what they paid). Same format as --mrr.')
+        .option('--total-paid <amount>', 'Filter by total paid so far (successful payments incl. one-time, after discounts, refunds not subtracted). Same format as --mrr.')
+        .option('--payments <count>', 'Filter by the number of successful payments: 3 (exactly), 3.. (more than), ..3 (fewer than), 2..5 (between, inclusive).')
         .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
         .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
@@ -43,6 +47,10 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         cancel_date: opts.cancelDate,
         renewal_date: opts.renewalDate,
         trial_end_date: opts.trialEndDate,
+        mrr: opts.mrr,
+        last_active_mrr: opts.lastActiveMrr,
+        total_paid: opts.totalPaid,
+        payments: opts.payments,
         type: opts.type,
         breakdown: opts.breakdown,
         show: opts.show,
