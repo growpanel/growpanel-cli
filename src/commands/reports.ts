@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { loadConfig } from '../config.js';
 import { GrowPanelClient } from '../client.js';
-import { render } from '../output.js';
+import { render, formatValue } from '../output.js';
 import { getColumns, KNOWN_REPORTS } from '../columns.js';
 import { handleError } from '../errors.js';
 import type { GlobalOptions } from '../types.js';
@@ -28,6 +28,9 @@ function addReportOptions(cmd: Command): Command {
         .option('--payments <count>', 'Filter by the number of successful payments: 3 (exactly), 3.. (more than), ..3 (fewer than), 2..5 (between, inclusive).')
         .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
         .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
+        .option('--sort <field>', 'Sort the list in list-style reports. For paused: mrr (default), paused_since or expected_back.')
+        .option('--order <dir>', 'Sort direction: asc or desc (default desc).')
+        .option('--limit <n>', 'Maximum rows in list-style reports (e.g. paused, default 500).')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
 }
 
@@ -54,6 +57,9 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         type: opts.type,
         breakdown: opts.breakdown,
         show: opts.show,
+        sort: opts.sort,
+        order: opts.order,
+        limit: opts.limit,
     };
 }
 
@@ -73,6 +79,7 @@ Examples:
   $ growpanel reports mrr --breakdown plan --format json
   $ growpanel reports cohort --currency usd
   $ growpanel reports cashflow-failed-payments --date 20240601-20241231
+  $ growpanel reports paused --sort expected_back --order asc
         `);
 
     addReportOptions(reports);
@@ -96,6 +103,19 @@ Examples:
                 : data;
 
             const columns = getColumns(name);
+            // Snapshot reports like `paused` return { summary, list, ... }: in table/CSV output show
+            // the summary as key/value rows, then the list as a table. JSON keeps the whole object.
+            if (config.format !== 'json' && result && typeof result === 'object' && !Array.isArray(result) && Array.isArray((result as any).list)) {
+                const { summary, list } = result as { summary?: unknown; list: unknown[] };
+                if (summary && typeof summary === 'object') {
+                    // Summary amounts are in cents like everywhere in the API: show *_mrr values as money.
+                    const shown = Object.fromEntries(Object.entries(summary as Record<string, unknown>)
+                        .map(([k, v]) => [k, /mrr/.test(k) && typeof v === 'number' ? formatValue(v, 'currency', currency) : v]));
+                    render(shown, { config, columns: null, currency });
+                }
+                render(list, { config, columns, currency });
+                return;
+            }
             render(result, { config, columns, currency });
         } catch (err) {
             handleError(err, command.optsWithGlobals()?.verbose);

@@ -35,7 +35,7 @@ export function registerCustomersCommand(program: Command): void {
         .option('--last-active-mrr <amount>', 'Filter by the MRR the last time it was above zero (finds churned customers by what they paid). Same format as --mrr.')
         .option('--total-paid <amount>', 'Filter by total paid so far (successful payments incl. one-time, after discounts, refunds not subtracted). Same format as --mrr.')
         .option('--payments <count>', 'Filter by the number of successful payments: 3 (exactly), 3.. (more than), ..3 (fewer than), 2..5 (between, inclusive).')
-        .option('--status <status>', 'Filter by status (e.g. active, canceled, trialing). Use "all" to include every status.')
+        .option('--status <status>', 'Filter by status (e.g. active, past_due, paused, canceled, trialing). Use "all" to include every status.')
         .addHelpText('after', `
 Examples:
   $ growpanel customers list

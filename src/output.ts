@@ -8,7 +8,7 @@ interface RenderOptions {
     currency?: string;
 }
 
-function formatValue(value: unknown, format?: ColumnDef['format'], currencyCode?: string): string {
+export function formatValue(value: unknown, format?: ColumnDef['format'], currencyCode?: string): string {
     if (value === null || value === undefined) {
         return '';
     }
@@ -25,8 +25,11 @@ function formatValue(value: unknown, format?: ColumnDef['format'], currencyCode?
             return `${Number(value).toFixed(2)}%`;
         case 'number':
             return Number(value).toLocaleString('en-US');
-        case 'date':
-            return String(value);
+        case 'date': {
+            // Full ISO timestamps (e.g. 2026-09-30T10:00:00.000Z) show as the date only.
+            const str = String(value);
+            return /^\d{4}-\d{2}-\d{2}T/.test(str) ? str.slice(0, 10) : str;
+        }
         default:
             return String(value);
     }

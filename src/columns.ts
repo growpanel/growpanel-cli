@@ -74,6 +74,13 @@ const COLUMNS: Record<string, ColumnDef[]> = {
         { key: 'count', header: 'Count', format: 'number', align: 'right' },
         { key: 'type', header: 'Type', align: 'left' },
     ],
+    'paused': [
+        { key: 'customer_name', header: 'Customer', align: 'left' },
+        { key: 'customer_email', header: 'Email', align: 'left' },
+        { key: 'mrr_before_pause_base_currency', header: 'MRR before pause', format: 'currency', align: 'right' },
+        { key: 'paused_since', header: 'Paused since', format: 'date', align: 'left' },
+        { key: 'expected_back', header: 'Expected back', format: 'date', align: 'left' },
+    ],
     'custom-variables': [
         { key: 'variable_name', header: 'Variable', align: 'left' },
         { key: 'value', header: 'Value', align: 'left' },
@@ -109,6 +116,8 @@ export const KNOWN_REPORTS = [
     'cancellation-timing',
     'cancellation-timing-detail',
     'customer-concentration',
+    // Paused subscriptions right now (snapshot): summary + list. --sort mrr|paused_since|expected_back, --order asc|desc.
+    'paused',
     'cashflow-failed-payments',
     'cashflow-failed-payments-summary',
     'cashflow-failed-payments-detail',
