@@ -27,8 +27,13 @@ function addReportOptions(cmd: Command): Command {
         .option('--total-paid <amount>', 'Filter by total paid so far (successful payments incl. one-time, after discounts, refunds not subtracted). Same format as --mrr.')
         .option('--payments <count>', 'Filter by the number of successful payments: 3 (exactly), 3.. (more than), ..3 (fewer than), 2..5 (between, inclusive).')
         .option('--type <movement>', 'For the mrr-subtypes report: which movement to decompose into subtypes — expansion | contraction | churn (required for that report).')
-        .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing. Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
-        .option('--sort <field>', 'Sort the list in list-style reports. For paused: mrr (default), paused_since or expected_back.')
+        .option('--breakdown <field>', 'Group results by a dimension. Supported on mrr, retention, cohort, leads, leads-table, transactions (cashflow), transactions-table, cashflow-refunds, churn-reasons, churn-scheduled, cancellation-timing, and payout-fees (currency only). Common values: plan, currency, payment_method, country, region, market, age, data_source, billing_freq, pricing_model. Custom variables: custom_<key>. Dimension values must match the stored form (e.g. billing_freq=month, not "monthly") — a value that matches nothing returns 0 rows.')
+        .option('--selected-date <date>', 'For drill-down reports (payouts-list, payout-fees-detail, movement-table): the period, as its last day (yyyy-MM-dd) from the aggregate report.')
+        .option('--category <types>', 'Cashflow categories, space-separated (transactions): month_sub, year_sub, metered, one_time, discount, refund, fee, tax, fx_loss, and with --payouts 1 platform_income. With --breakdown, --category fee splits fees by group (e.g. by payment_method).')
+        .option('--payouts <1>', 'On transactions: 1 adds platform income (Stripe Connect application fees) as a revenue line, for accounts that earn it.')
+        .option('--fee-kind <kinds>', 'On payout-fees reports: only these fee types, space-separated (payment, card, network, billing, invoicing, tax, revrec, sigma, connect, identity, fincon, dispute, terminal, issuing, tokens, methods, payout, credit, radar, other).')
+        .option('--fee-group <group>', 'On payout-fees-detail: one row of the fees table (a fee type, or with --breakdown currency a currency code or account_wide).')
+        .option('--sort <field>', 'Sort the list in list-style reports. For paused: mrr (default), paused_since or expected_back. For payouts-list: date, paid or fees.')
         .option('--order <dir>', 'Sort direction: asc or desc (default desc).')
         .option('--limit <n>', 'Maximum rows in list-style reports (e.g. paused, default 500).')
         .option('--show <value>', 'Include extra info (e.g., "query" to see SQL)');
@@ -57,6 +62,11 @@ function buildReportParams(opts: Record<string, string | undefined>): Record<str
         type: opts.type,
         breakdown: opts.breakdown,
         show: opts.show,
+        'selected-date': opts.selectedDate,
+        category: opts.category,
+        payouts: opts.payouts,
+        fee_kind: opts.feeKind,
+        fee_group: opts.feeGroup,
         sort: opts.sort,
         order: opts.order,
         limit: opts.limit,
@@ -80,6 +90,9 @@ Examples:
   $ growpanel reports cohort --currency usd
   $ growpanel reports cashflow-failed-payments --date 20240601-20241231
   $ growpanel reports paused --sort expected_back --order asc
+  $ growpanel reports payout-fees --date 20260101-20260930 --breakdown currency
+  $ growpanel reports payout-fees-detail --selected-date 2026-09-30 --fee-group network
+  $ growpanel reports transactions --payouts 1 --date 20260101-20260930
         `);
 
     addReportOptions(reports);

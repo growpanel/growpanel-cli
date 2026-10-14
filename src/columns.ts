@@ -81,6 +81,40 @@ const COLUMNS: Record<string, ColumnDef[]> = {
         { key: 'paused_since', header: 'Paused since', format: 'date', align: 'left' },
         { key: 'expected_back', header: 'Expected back', format: 'date', align: 'left' },
     ],
+    // Payouts (Stripe accounts). Amounts in the base currency; a payout's own currency is in its currency column.
+    'payouts': [
+        { key: 'date', header: 'Period end', align: 'left' },
+        { key: 'paid_out', header: 'Paid out', format: 'currency', align: 'right' },
+        { key: 'payouts', header: 'Payouts', format: 'number', align: 'right' },
+    ],
+    'payouts-list': [
+        { key: 'created', header: 'Paid out', format: 'date', align: 'left' },
+        { key: 'arrival', header: 'Arrives', format: 'date', align: 'left' },
+        { key: 'bank', header: 'Bank account', align: 'left' },
+        { key: 'currency', header: 'Currency', align: 'left' },
+        { key: 'paid_base', header: 'Amount', format: 'currency', align: 'right' },
+        { key: 'status', header: 'Status', align: 'left' },
+    ],
+    'payout-fees': [
+        { key: 'date', header: 'Period end', align: 'left' },
+        { key: 'fees', header: 'Fees', format: 'currency', align: 'right' },
+        { key: 'fee_rate', header: 'Effective fee rate', format: 'percent', align: 'right' },
+    ],
+    'payout-fees-detail': [
+        { key: 'date', header: 'Date', format: 'date', align: 'left' },
+        { key: 'type', header: 'Fee type', align: 'left' },
+        { key: 'description', header: 'Description', align: 'left' },
+        { key: 'currency', header: 'Currency', align: 'left' },
+        { key: 'amount_base', header: 'Amount', format: 'currency', align: 'right' },
+        { key: 'customer_name', header: 'Customer', align: 'left' },
+    ],
+    'payouts-balance': [
+        { key: 'currency', header: 'Currency', align: 'left' },
+        { key: 'available_base', header: 'Available', format: 'currency', align: 'right' },
+        { key: 'pending_base', header: 'Pending', format: 'currency', align: 'right' },
+        { key: 'in_transit_base', header: 'In transit', format: 'currency', align: 'right' },
+        { key: 'next_base', header: 'Next payout', format: 'currency', align: 'right' },
+    ],
     'custom-variables': [
         { key: 'variable_name', header: 'Variable', align: 'left' },
         { key: 'value', header: 'Value', align: 'left' },
@@ -128,6 +162,16 @@ export const KNOWN_REPORTS = [
     'cashflow-failure-rate',
     'cashflow-failure-rate-summary',
     'cashflow-outstanding-unpaid',
+    // Payouts (Stripe accounts): payouts to the banks, every Stripe fee (by type or --breakdown currency), the balance.
+    // payout-fees-detail needs --selected-date (a period end from payout-fees), optionally --fee-group.
+    'payouts',
+    'payouts-table',
+    'payouts-list',
+    'payout-fees',
+    'payout-fees-table',
+    'payout-fees-detail',
+    'payouts-balance',
+    'payouts-status',
     'custom-variables',
 ];
 
