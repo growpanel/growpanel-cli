@@ -31,7 +31,7 @@ function addReportOptions(cmd: Command): Command {
         .option('--selected-date <date>', 'For drill-down reports (payouts-list, payout-fees-detail, movement-table): the period, as its last day (yyyy-MM-dd) from the aggregate report.')
         .option('--category <types>', 'Cashflow categories, space-separated (transactions): month_sub, year_sub, metered, one_time, discount, refund, fee, tax, fx_loss, and with --payouts 1 platform_income. With --breakdown, --category fee splits fees by group (e.g. by payment_method).')
         .option('--payouts <1>', 'On transactions: 1 adds platform income (Stripe Connect application fees) as a revenue line, for accounts that earn it.')
-        .option('--fee-kind <kinds>', 'On payout-fees reports: only these fee types, space-separated (payment, card, network, billing, invoicing, tax, revrec, sigma, connect, identity, fincon, dispute, terminal, issuing, tokens, methods, payout, credit, radar, other).')
+        .option('--fee-kind <kinds>', 'On payout-fees reports: only these fee types, space-separated (payment, fx (currency conversion), card, network, billing, invoicing, tax, revrec, sigma, connect, identity, fincon, dispute, terminal, issuing, tokens, methods, payout, credit, radar, other).')
         .option('--fee-group <group>', 'On payout-fees-detail: one row of the fees table (a fee type, or with --breakdown currency a currency code or account_wide).')
         .option('--sort <field>', 'Sort the list in list-style reports. For paused: mrr (default), paused_since or expected_back. For payouts-list: date, paid or fees.')
         .option('--order <dir>', 'Sort direction: asc or desc (default desc).')
